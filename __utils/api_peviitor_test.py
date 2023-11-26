@@ -54,7 +54,7 @@ def get_all_jobs_from_peviitor(company: str) -> list:
             })
     elif len(response.json()['response']['docs']) == 10:
 
-        while len(response.json()['response']['docs']) == 10:
+        while len(response.json()['response']['docs']) != 0:
             response = requests.get(
                 f'https://api.peviitor.ro/v3/search/?q={company.lower()}&country=Rom%C3%A2nia&page={page}',
                 headers=HEADERS_GET,
