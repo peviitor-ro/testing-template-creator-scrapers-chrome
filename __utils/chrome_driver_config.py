@@ -20,7 +20,6 @@ def driver_config():
     chrome_options = Options()
 
     # for chrome options
-
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-gpu")
