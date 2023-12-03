@@ -95,7 +95,7 @@ def test_logo_{nume_test_scraper}():
     '''
     ... test logo from peviitor API.
     '''
-    logo = get_logo_from_api('bunge')
+    logo = get_logo_from_api('{nume_test_scraper}')
     assert logo
 
 
@@ -129,6 +129,7 @@ def test_equality_jobs_peviitor_and_company_site(driver_config):
     #
     # verification for job from peviitor with jobs from company site # # # # #
     #
+    # verification for not 404 and expired job
     for idx, job in enumerate(job_site):
         driver_config.get(job['job_link'])
 

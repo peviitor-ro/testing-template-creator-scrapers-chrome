@@ -108,7 +108,7 @@ def test_every_job_link_from_site(driver_config):
     #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-    # verification for job from peviitor with jobs from company site # # # # #
+    # verification for not 404 and expired jobs
     for idx, job in enumerate(job_site):
         driver_config.get(job['job_link'])
 
