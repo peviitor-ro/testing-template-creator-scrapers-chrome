@@ -15,6 +15,7 @@ from __utils import (
     driver_config,
     get_jobs_num_from_peviitor,
     get_all_jobs_from_peviitor,
+    get_logo_from_api,
 )
 
 
@@ -72,46 +73,43 @@ def get_number_of_jobs_from_site(driver) -> list[dict]:
     return sorted(lst_dict, key=lambda job: job['job_title'])
 
 
+def test_logo_bunge():
+    '''
+    ... test logo from peviitor API.
+    '''
+    logo = get_logo_from_api('bunge')
+    assert logo == True
+
+
 def test_every_job_link_from_site(driver_config):
     '''
     ... test every job_link from site.
     '''
-    job_api_2 = get_all_jobs_from_peviitor('bunge')
-    job_site_2 = get_number_of_jobs_from_site(driver_config)
-
-    for idx, job in enumerate(job_site_2):
-        driver_config.get(job['job_link'])
-
-        title_ = cautare_element_by_EC(driver_config, 'ID', 'job-title')
-        if title_:
-            title_ = title_.text.strip()
-            assert title_ == job_api_2[idx]['job_title'].strip()
-        else:
-            raise AssertionError('Titlul nu a fost gasit. Probabil 404 sau job expirat!')
-
-
-def test_jobs_Bunge(driver_config):
-    '''
-    ... test for assert == lenjobs,
-    title_site == title_api,
-    link_site == link_api
-    '''
-
-    # Call one time function scrape jobs from site
-    job_site = get_number_of_jobs_from_site(driver_config)
-
-    # Call one time all jobs from peviitor API
     job_api = get_all_jobs_from_peviitor('bunge')
+    job_site = get_number_of_jobs_from_site(driver_config)
 
     # verification for job_site and job_api number
     assert len(job_site) == len(job_api)
 
-    # verification for == job_site and job_api
+    # verification for == job_site and job_api # # # # # # # # # # # # # # # #
     for i in range(len(job_site)):
         if job_site[i]['job_title'] == job_api[i]['job_title'].strip() and job_site[i]['job_link'] == job_api[i]['job_link'].strip():
             pass
         else:
             raise AssertionError('Titlurile sau link-urile nu sunt identice.')
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+    # verification for job from peviitor with jobs from company site # # # # #
+    for idx, job in enumerate(job_site):
+        driver_config.get(job['job_link'])
+
+        title_ = cautare_element_by_EC(driver_config, 'ID', 'job-title')
+        if title_:
+            title_ = title_.text.strip()
+            assert title_ == job_api[idx]['job_title'].strip()
+        else:
+            raise AssertionError('Titlul nu a fost gasit. Probabil 404 sau job expirat!')
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 def test_ALL_TEST_PASSED():

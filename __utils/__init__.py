@@ -16,3 +16,7 @@ from __utils.api_peviitor_test import (
     get_jobs_num_from_peviitor,
     get_all_jobs_from_peviitor,
 )
+
+from __utils.logo_from_api import (
+    get_logo_from_api,
+)

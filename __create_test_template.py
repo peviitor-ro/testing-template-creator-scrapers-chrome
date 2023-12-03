@@ -9,6 +9,7 @@
 #
 #  Makek new template for testing:
 #  python3 __create_test_template.py "nume_scraper" "link_scraper"
+#  run tests: pytest --verbose bunge_test.py
 #
 import sys
 import os
@@ -32,6 +33,7 @@ from __utils import (
     driver_config,
     get_jobs_num_from_peviitor,
     get_all_jobs_from_peviitor,
+    get_logo_from_api,
 )
 import pytest
 
@@ -67,44 +69,72 @@ import pytest
     Se acceseaza exact dupa aceleasi chei ca la scraperi:
     - job_link
     - job_title
+
+    5) ---> get_logo_from_api(company_name: str) -> bool
+    Aceasta functie verifica daca exista logo pentru companie cautata.
 '''
 
 
-def get_number_of_jobs_from_site() -> list[dict]:
+def get_number_of_jobs_from_site(driver) -> list[dict]:
     '''
     ... a function that returns number of jobs from site.
     '''
     lst_dict = list()
     try:
         driver.get('{link_scraper}')
-        links_titles = search.cautare_elemente_by_EC('CLASS_NAME', 'jobTitle-link')
+        links_titles = cautare_elemente_by_EC(driver, 'CLASS_NAME', 'jobTitle-link')
         for lt in links_titles:
             if lt.text.strip() != '':
+                lst_dict.append({'job_title': lt.text.strip(), 'job_link': lt.get_attribute('href').strip()})
     except Exception as e:
         print(e)
-    finally:
-        driver.quit()
 
     return sorted(lst_dict, key=lambda job: job['job_title'])
 
 
-def test_{nume_test_scraper.lower()}():
+def test_logo_{nume_test_scraper}():
+    '''
+    ... test logo from peviitor API.
+    '''
+    logo = get_logo_from_api('bunge')
+    assert logo == True
 
-    job_site = get_number_of_jobs_from_site()
+
+def test_equality_jobs_peviitor_and_company_site(driver_config):
+    '''
+    ... test every job_link from peviitor and {nume_test_scraper}.
+    '''
     job_api = get_all_jobs_from_peviitor('{nume_test_scraper}')
+    job_site = get_number_of_jobs_from_site(driver_config)
 
     # verification for job_site and job_api number
     assert len(job_site) == len(job_api)
 
-    # verification for == job_site and job_api
+    # verification for == job_site and job_api # # # # # # # # # # # # # # # #
+    #
     for i in range(len(job_site)):
+        if job_site[i]['job_title'] == job_api[i]['job_title'].strip() and job_site[i]['job_link'] == job_api[i]['job_link'].strip():
             pass
         else:
             raise AssertionError('Titlurile sau link-urile nu sunt identice.')
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    #
+    # verification for job from peviitor with jobs from company site # # # # #
+    #
+    for idx, job in enumerate(job_site):
+        driver_config.get(job['job_link'])
+
+        title_ = cautare_element_by_EC(driver_config, 'ID', 'job-title')
+        if title_:
+            title_ = title_.text.strip()
+            assert title_ == job_api[idx]['job_title'].strip()
+        else:
+            raise AssertionError('Titlul nu a fost gasit. Probabil 404 sau job expirat!')
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-def test_final_FLAG():
-    print("\n=== Testele au fost rulate cu succes ===\n")
+def test_ALL_TEST_PASSED():
+    assert True
 """
 
     with open(f'{nume_test_scraper.lower()}_test.py', 'w') as f:
