@@ -35,7 +35,6 @@ from __utils import (
     get_all_jobs_from_peviitor,
     get_logo_from_api,
 )
-import pytest
 
 '''
     Testare Automata cu Selenium + Chrome Driver
@@ -85,7 +84,7 @@ def get_number_of_jobs_from_site(driver) -> list[dict]:
         links_titles = cautare_elemente_by_EC(driver, 'CLASS_NAME', 'jobTitle-link')
         for lt in links_titles:
             if lt.text.strip() != '':
-                lst_dict.append({'job_title': lt.text.strip(), 'job_link': lt.get_attribute('href').strip()})
+                lst_dict.append(dict(job_title=lt.text.strip(), job_link=lt.get_attribute('href').strip()))
     except Exception as e:
         print(e)
 
