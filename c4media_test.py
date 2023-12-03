@@ -94,10 +94,19 @@ def test_equality_jobs_peviitor_and_company_site(driver_config):
     # verification for == job_site and job_api # # # # # # # # # # # # # # # #
     #
     for i in range(len(job_site)):
-        if job_site[i]['job_title'] == job_api[i]['job_title'].strip() and job_site[i]['job_link'] == job_api[i]['job_link'].strip():
+
+        # ## ## ## ## ## ## ## ##
+        if job_site[i]['job_title'] == job_api[i]['job_title'].strip():
             pass
         else:
-            raise AssertionError('Titlurile sau link-urile nu sunt identice.')
+            raise AssertionError('Titlurile nu sunt identice.')
+
+        # ## ## ## ## ## ## ## ##
+        if job_site[i]['job_link'] == job_api[i]['job_link'].strip():
+            pass
+        else:
+            raise AssertionError('Link-urile nu sunt identice.')
+    #
     # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     #
     # verification for job from peviitor with jobs from company site # # # # #
