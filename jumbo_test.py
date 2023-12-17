@@ -5,8 +5,8 @@
 #  ... and EC elements for testing
 #
 #
-# Test Name ---> c4media
-# Link Scraper ------> https://c4media.com/career
+# Test Name ---> Jumbo
+# Link Scraper ------> https://corporate.e-jumbo.gr/ro/job-opportunities/theseis-ergasias/
 #
 #
 from __utils import (
@@ -62,7 +62,7 @@ def get_number_of_jobs_from_site(driver) -> list[dict]:
     '''
     lst_dict = list()
     try:
-        driver.get('https://c4media.com/career')
+        driver.get('https://corporate.e-jumbo.gr/ro/job-opportunities/theseis-ergasias/')
         links_titles = cautare_elemente_by_EC(driver, 'CLASS_NAME', 'jobTitle-link')
         for lt in links_titles:
             if lt.text.strip() != '':
@@ -73,19 +73,19 @@ def get_number_of_jobs_from_site(driver) -> list[dict]:
     return sorted(lst_dict, key=lambda job: job['job_title'])
 
 
-def test_logo_c4media():
+def test_logo_Jumbo():
     '''
     ... test logo from peviitor API.
     '''
-    logo = get_logo_from_api('c4media')
+    logo = get_logo_from_api('Jumbo')
     assert logo
 
 
 def test_equality_jobs_peviitor_and_company_site(driver_config):
     '''
-    ... test every job_link from peviitor and c4media.
+    ... test every job_link from peviitor and Jumbo.
     '''
-    job_api = get_all_jobs_from_peviitor('c4media')
+    job_api = get_all_jobs_from_peviitor('Jumbo')
     job_site = get_number_of_jobs_from_site(driver_config)
 
     # verification for job_site and job_api number

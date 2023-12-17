@@ -7,7 +7,7 @@
 #  Github: https://github.com/andreireporter13
 #  Echipa de testeri de la Peviitor.ro
 #
-#  Makek new template for testing:
+#  Make new template for testing:
 #  python3 __create_test_template.py "nume_scraper" "link_scraper"
 #  run tests: pytest --verbose bunge_test.py
 #
